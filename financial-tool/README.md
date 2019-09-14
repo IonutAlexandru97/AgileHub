@@ -20,7 +20,9 @@ Pentru  a instala pachete cu npm se executa:
 npm install <package_name>
 ```
 Se instaleaza pachetul *sequelize si sequelize-cli*:
-- ***npm install --save sequelize***
-- ***npm install --save-dev sequelize-cli*** <br />
+```node
+npm install --save sequelize
+npm install --save-dev sequelize-cli
+```
 Se testeaza instalarea sequelize-cli:
 - ***npx sequelize --help***
