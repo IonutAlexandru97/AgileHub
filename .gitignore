@@ -60,4 +60,10 @@ typings/
 # next.js build output
 .next
 
-.history
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
