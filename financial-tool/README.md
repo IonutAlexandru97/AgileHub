@@ -73,7 +73,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.listen(PORT, () => console.log(`Server started at port: ${PORT}`));
 ```
-### 1.3.3 Creare controller si rute pentru Users fara brcypt si error handling
+### 1.3.3 Creare controller si rute pentru Users 
 #### 1.3.3.1 Users.js fara bcrypt si error handling
 ```Javascript
 const users = require('../models').Users;
@@ -136,4 +136,50 @@ app.listen(PORT, () => console.log(`Server started at port : ${PORT}`));
 
 #### 1.3.3.3 Testare cu Postman
 
+### 1.3.2 Encriptare parola utilizator
+#### 1.3.2.1 Instalare pachete
+```node
+npm install --save brcyptjs
+```
+- **_bcryptjs_**: librarie folosita pentru criptarea datelor sub forma de hash  
+
+#### 1.3.2.2 Modificare models/users.js
+```Javascript
+'use strict';
+
+const bcrypt = require('bcryptjs');
+
+module.exports = (sequelize, DataTypes) => {
+  const Users = sequelize.define('Users', {
+    id: {
+      // UUID (universally unique identifier) = is a 128-bit number used to identify information in computer systems
+      type: DataTypes.UUID,
+      allowNull: false,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
+      unique: true,
+      validate: {
+        notEmpty: true
+      }
+    },
+    first_name: DataTypes.STRING,
+    last_name: DataTypes.STRING,
+    username: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING
+  }, {});
+  Users.associate = function(models) {
+    // associations can be defined here
+  };
+
+  Users.beforeCreate(users => {
+    users.password = bcrypt.hashSync(
+      users.password,
+      bcrypt.genSaltSync(10),
+      null
+    );
+  });
+  return Users;
+};
+```
 
