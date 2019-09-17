@@ -130,6 +130,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+// 1.3.3.2
 app.use('/api', routes);
 app.listen(PORT, () => console.log(`Server started at port : ${PORT}`));
 ```
@@ -172,6 +173,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
   };
 
+// 1.3.2.2
   Users.beforeCreate(users => {
     users.password = bcrypt.hashSync(
       users.password,
