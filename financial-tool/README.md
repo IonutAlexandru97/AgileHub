@@ -23,6 +23,19 @@ Se instaleaza pachetul *sequelize si sequelize-cli*:
 ```node
 npm install --save sequelize
 npm install --save-dev sequelize-cli
+npm install --save mysql2
 ```
 Se testeaza instalarea sequelize-cli:
-- ***npx sequelize --help***
+```node
+npx sequelize --help
+```
+Se foloseste comanda:
+```node
+npx sequelize init
+```
+Creare model *Users*:
+```node
+npx sequelize model:generate --name Users --attributes first_name:String,last_name:String,username:String,email:String,password:String
+```
+Creare baza de date *agilehub*
+Editare *config.json*
