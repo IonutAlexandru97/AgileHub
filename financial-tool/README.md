@@ -73,4 +73,67 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.listen(PORT, () => console.log(`Server started at port: ${PORT}`));
 ```
+### 1.3.3 Creare controller si rute pentru Users fara brcypt si error handling
+#### 1.3.3.1 Users.js fara bcrypt si error handling
+```Javascript
+const users = require('../models').Users;
+
+module.exports = {
+    register
+};
+
+function register(req, res) {
+    users.create({
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password
+    }).then(response => res.status(200).send ({
+        message: 'User' + response.username + ' has been created!',
+    })).catch(error =>{
+        console.log(error);
+    });
+}
+```
+#### 1.3.3.1 routes.js
+```Javascript
+const express = require('express');
+const router = express.Router();
+
+const usersController = require('./controllers/users');
+
+// Users controller
+router.post('/register', usersController.register);
+
+module.exports = router;
+```
+
+#### 1.3.3.2 server.js
+```Javascript
+var models = require('./models');
+var express = require("express");
+var app = express();
+const PORT = process.env.PORT || 5000;
+const bodyParser = require('body-parser');
+const routes = require('./routes');
+const logger = require('morgan');
+var passport = require('./config/passport');
+
+models.sequelize.sync().then(function(){
+    console.log('Database is synced!');
+}).catch(function(err){
+    console.log("Error!", err);
+});
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use('/api', routes);
+app.listen(PORT, () => console.log(`Server started at port : ${PORT}`));
+```
+
+#### 1.3.3.3 Testare cu Postman
+
 
