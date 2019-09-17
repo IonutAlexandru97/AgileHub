@@ -2,6 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Users = sequelize.define('Users', {
     id: {
+      // UUID (universally unique identifier) = is a 128-bit number used to identify information in computer systems
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
