@@ -74,16 +74,18 @@ npm install --save-dev morgan nodemon
 
 ## 3.2 Creare fisier server.js
 ```Javascript
-var models = require('./models');
 var express = require('express');
-var app = express();
-const PORT = process.env.PORT || 5000;
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 
+var models = require('./models');
+
+var app = express();
+const PORT = process.env.PORT || 5000;
+
 models.sequelize.sync().then(function() {
     console.log('Database is synced!');
-}).catch(function(err) {
+}).catch(function (err) {
     console.log("Error!", err);
 });
 
@@ -91,6 +93,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.listen(PORT, () => console.log(`Server started at port: ${PORT}`));
+
+
+
 ```
 
 ## 3.3 Creare fisier .jshintrc
@@ -105,12 +110,13 @@ app.listen(PORT, () => console.log(`Server started at port: ${PORT}`));
 npx nodemon
 ```
 ## 3.5 Creare controller si rute pentru Users 
-### 3.5.1 Users.js 
-```Javascript
-const users = require('../models').Users;
 
-module.exports = {
-    register
+### 3.5.1 controllers/users.js 
+```Javascript
+const users = require('../models/users').Users;
+
+module.exports =  {
+ register
 };
 
 function register(req, res) {
@@ -121,13 +127,13 @@ function register(req, res) {
         email: req.body.email,
         password: req.body.password
     }).then(response => res.status(200).send ({
-        message: 'User' + response.username + ' has been created!',
-    })).catch(error =>{
+        message: 'User ' + response.username + ' has been created!',
+    })).catch(error => {
         console.log(error);
     });
 }
 ```
-#### 1.3.3.1 routes.js
+#### 3.5.2 routes.js
 ```Javascript
 const express = require('express');
 const router = express.Router();
@@ -140,34 +146,26 @@ router.post('/register', usersController.register);
 module.exports = router;
 ```
 
-#### 1.3.3.2 server.js
+### 3.5.3 Modificare server.js
 ```Javascript
-var models = require('./models');
-var express = require("express");
-var app = express();
-const PORT = process.env.PORT || 5000;
-const bodyParser = require('body-parser');
 const routes = require('./routes');
-const logger = require('morgan');
-var passport = require('./config/passport');
 
-models.sequelize.sync().then(function(){
-    console.log('Database is synced!');
-}).catch(function(err){
-    console.log("Error!", err);
-});
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(passport.initialize());
-app.use(passport.session());
-// 1.3.3.2
 app.use('/api', routes);
-app.listen(PORT, () => console.log(`Server started at port : ${PORT}`));
 ```
 
-#### 1.3.3.3 Testare cu Postman
+### 3.5.4Testare cu Postman
 http://localhost:5000/api/register --> POST method
+```JSON
+{
+	"first_name": "Ionut Alexandru",
+	"last_name": "Candea",
+	"username": "admin",
+	"email": "ionut_alexandru.candea@yahoo.com",
+	"password": "admin"
+}
+```
+
+### 3.5.5 Verficare in baza de date
 
 ### 1.3.4 Encriptare parola utilizator
 #### 1.3.4.1 Instalare pachete
