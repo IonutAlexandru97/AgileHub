@@ -167,53 +167,49 @@ http://localhost:5000/api/register --> POST method
 
 ### 3.5.5 Verficare in baza de date
 
-### 1.3.4 Encriptare parola utilizator
-#### 1.3.4.1 Instalare pachete
+## 3.6 Encriptare parola utilizator
+### 3.6.1 Instalare pachete
 ```node
 npm install --save brcyptjs
 ```
 - **_bcryptjs_**: librarie folosita pentru criptarea datelor sub forma de hash  
 
-#### 1.3.4.2 Modificare models/users.js
+### 3.6.2 Modificare models/users.js
 ```Javascript
-'use strict';
-
-const bcrypt = require('bcryptjs');
-
-module.exports = (sequelize, DataTypes) => {
-  const Users = sequelize.define('Users', {
-    id: {
+id: {
       // UUID (universally unique identifier) = is a 128-bit number used to identify information in computer systems
       type: DataTypes.UUID,
       allowNull: false,
-      primaryKey: true,
+      primaryKey:  true,
       defaultValue: DataTypes.UUIDV4,
       unique: true,
       validate: {
-        notEmpty: true
+        notEmtpty: true
       }
     },
-    first_name: DataTypes.STRING,
-    last_name: DataTypes.STRING,
-    username: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING
-  }, {});
-  Users.associate = function(models) {
-    // associations can be defined here
-  };
 
-// 1.3.2.2
-  Users.beforeCreate(users => {
-    users.password = bcrypt.hashSync(
+ Users.beforeCreate(users => {
+    users.password = bcrypt.hashSync (
       users.password,
       bcrypt.genSaltSync(10),
       null
     );
   });
-  return Users;
-};
 ```
+
+### 3.6.3 Testare cu Postman
+http://localhost:5000/api/register --> POST method
+```JSON
+{
+	"first_name": "Ionut Alexandru",
+	"last_name": "Candea",
+	"username": "admin",
+	"email": "ionut_alexandru.candea@yahoo.com",
+	"password": "admin"
+}
+```
+### 3.6.4 Stergere tabel *users*
+### 3.6.5 Verificare in Baza de date
 
 ### 1.3.5 Logare utilizator folosind PassportJS
 #### 1.3.5.1 Instalare pachete
