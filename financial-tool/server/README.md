@@ -358,7 +358,7 @@ http://localhost:5000/api/register --> POST method
             } 
 ```
 
-### 3.7.10 Testare cu Postman
+### 3.7.12 Testare cu Postman
 http://localhost:5000/api/register --> POST method
 ```JSON
 {
@@ -369,6 +369,7 @@ http://localhost:5000/api/register --> POST method
 	"password": "admin"
 }
 
+```
 
 ### 1.3.5 Logare utilizator folosind PassportJS
 #### 1.3.5.1 Instalare pachete
