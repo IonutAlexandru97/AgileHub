@@ -262,5 +262,14 @@ var passport = require('./config/passport');
 app.use(passport.initialize());
 app.use(passport.session());
 ```
+#### 1.3.5.4 Testare Postman
+http://localhost:5000/api/login 
+```JSON
+{
+	"email": "ionut_alexandru.candea@yahoo.com",
+	"password": "da"
+}
+```
+
 
 
