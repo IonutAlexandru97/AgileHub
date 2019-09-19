@@ -1,8 +1,17 @@
-# 1. Backend
-
-## 1.1 Creare proiect initial npm 
-Pentru a crea un proiect cu NodeJS si NPM se ruleaza comanda: <br />
-***npm init*** <br />
+# 1. Creare proiect initial npm 
+Creare director *server*:
+```batch
+mkdir server
+```
+Accesare director *server*:
+```batch
+cd server
+```
+La entrypoint se introduce *server.js* </br>
+Pentru a crea un proiect cu NodeJS si NPM se ruleaza comanda: 
+```node
+npm init
+```
 Aceasta comanda creaza un fisier **_package.json_**  care are urmatoarele elemente:
 - **_name_**: seteaza numele aplicatiei/pachetului
 - **_version_**: indica versiunea curenta
@@ -14,35 +23,34 @@ Aceasta comanda creaza un fisier **_package.json_**  care are urmatoarele elemen
 - **_devDependencies_**: o lista cu pachete npm care sunt instalate ca dependinte de development
 
 
-## 1.2 Instalare Sequelize si generare model
+# 2. Instalare Sequelize si generare model
 Pentru  a instala pachete cu npm se executa: 
 ```node
 npm install <package_name>
 ```
-Se instaleaza pechetele *sequelize, sequelize-cli si mysql2*:
+## 2.1 Instalare pachete:
 ```node
-npm install --save sequelize
+npm install --save sequelize  mysql2
 npm install --save-dev sequelize-cli
-npm install --save mysql2
 ```
-Se testeaza instalarea sequelize-cli:
+## 2.2 Se testeaza instalarea sequelize-cli:
 ```node
 npx sequelize --help
 ```
-Se foloseste comanda:
+## 2.3 Se foloseste comanda:
 ```node
 npx sequelize init
 ```
-Creare model *Users*:
+## 2.4 Creare model *Users*:
 ```node
 npx sequelize model:generate --name Users --attributes first_name:String,last_name:String,username:String,email:String,password:String
 ```
-Creare baza de date *agilehub* </br>
-Editare *config.json*
+## 2.5 Creare baza de date *agilehub* 
+## 2.6 Editare *config.json*
 
-## 1.3 Creare API cu Express
+# 3 Creare API cu Express
 
-### 1.3.1 Instalare pachete
+## 3.1 Instalare pachete
 ```node
 npm install --save express body-parser
 npm install --save-dev logger
