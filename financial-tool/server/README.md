@@ -47,21 +47,32 @@ npx sequelize model:generate --name Users --attributes first_name:String,last_na
 ```
 ## 2.5 Creare baza de date *agilehub* 
 ## 2.6 Editare *config.json*
+```JSON
+{
+  "development": {
+    "username": "root",
+    "password": "root",
+    "database": "agilehub",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  }  
+}
+```
 
 # 3 Creare API cu Express
 
 ## 3.1 Instalare pachete
 ```node
 npm install --save express body-parser
-npm install --save-dev logger
-npm install --save-dev nodemon
+npm install --save-dev morgan nodemon
 ```
 - **_express_**: este un framework pentru NodeJS folosit pentru crearea aplicatiilor web si a API-urilor
 - **_body-parser_**: extrage portiune a body-ului unui flux de cereri si le expune intr-o maniera mai usoara de a le manipula
 - **_morgan_**: folosit pentru loguri in terminal
 - **_nodemon_**: este un tool folosit in development care ajuta la restartarea automata a aplicatiei la momentul schimbarii unui fisier
 
-### 1.3.2 Creare fisier server.js
+## 3.2 Creare fisier server.js
 ```Javascript
 var models = require('./models');
 var express = require('express');
@@ -81,8 +92,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.listen(PORT, () => console.log(`Server started at port: ${PORT}`));
 ```
-### 1.3.3 Creare controller si rute pentru Users 
-#### 1.3.3.1 Users.js fara bcrypt si error handling
+
+## 3.3 Creare fisier .jshintrc
+```JSON
+ {
+    "esversion": 8
+}
+```
+
+## 3.4 Executare comanda
+```npm
+npx nodemon
+```
+## 3.5 Creare controller si rute pentru Users 
+### 3.5.1 Users.js 
 ```Javascript
 const users = require('../models').Users;
 
