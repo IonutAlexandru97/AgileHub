@@ -211,6 +211,165 @@ http://localhost:5000/api/register --> POST method
 ### 3.6.4 Stergere tabel *users*
 ### 3.6.5 Verificare in Baza de date
 
+## 3.7 Adaugare constrangeri asupra tabelului *users* si error handling
+### 3.7.1 Modificare models/users.js
+```Javascript
+first_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
+    last_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        notEmpty: true
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    }
+```
+
+### 3.7.2 Stergere table *users*
+### 3.7.3 Verificare cu postman 
+Introducere de 2 ori http://localhost:5000/api/register --> POST method
+```JSON
+{
+	"first_name": "Ionut Alexandru",
+	"last_name": "Candea",
+	"username": "admin",
+	"email": "ionut_alexandru.candea@yahoo.com",
+	"password": "admin"
+}
+```
+
+### 3.7.4 Modificare controllers/users.js
+```JS
+.catch(error => {
+        res.json(error);
+    });
+```
+
+### 3.7.5 Testare cu Postman
+http://localhost:5000/api/register --> POST method
+```JSON
+{
+	"first_name": "Ionut Alexandru",
+	"last_name": "Candea",
+	"username": "admin",
+	"email": "ionut_alexandru.candea@yahoo.com",
+	"password": "admin"
+}
+```
+
+### 3.7.6 Modificare controllers/users.js
+```JS
+.catch(error => {
+        for(var i in error.errors){
+            if(error.errors[i].type === 'unique violation'){
+                res.status(403).json({
+                    statusText: 403 + ' Forbidden!',
+                    message: 'This email is already registered!',
+                    error_message: error.errors[i].type
+                });
+            }else{
+                res.json(error);
+            }
+        }
+    });
+```
+
+### 3.7.7 Testare cu Postman
+http://localhost:5000/api/register --> POST method
+```JSON
+{
+	"first_name": "",
+	"last_name": "Candea",
+	"username": "admin",
+	"email": "ionut_alexandru.candea@yahoo.com",
+	"password": "admin"
+}
+```
+
+### 3.7.8 Modificare controllers/users.js
+```JS
+ if(error.errors[i].type === 'Validation error') {
+                res.status(403).json({
+                    statusText: 403 + ' Forbidden!',
+                    message: 'A filed cannot be empty!',
+                    error_message: error.errors[i].type
+                });
+            } 
+```
+
+### 3.7.9 Testare cu Postman
+http://localhost:5000/api/register --> POST method
+```JSON
+{
+	"first_name": "",
+	"last_name": "Candea",
+	"username": "admin",
+	"email": "ionut_alexandru.candea@yahoo.com",
+	"password": "admin"
+}
+```
+### 3.7.10 Testare cu Postman
+http://localhost:5000/api/register --> POST method
+```JSON
+{
+	"first_name": null,
+	"last_name": "Candea",
+	"username": "admin",
+	"email": "ionut_alexandru.candea@yahoo.com",
+	"password": "admin"
+}
+```
+
+### 3.7.11 Modificare controllers/users.js
+```JS
+ if(error.errors[i].type === 'notNull Violation') {
+                res.status(403).json({
+                    statusText: 403 + ' Forbidden!',
+                    message: 'A filed cannot be null!',
+                    error_message: error.errors[i].type
+                });
+            } 
+```
+
+### 3.7.10 Testare cu Postman
+http://localhost:5000/api/register --> POST method
+```JSON
+{
+	"first_name": null,
+	"last_name": "Candea",
+	"username": "admin",
+	"email": "ionut_alexandru.candea@yahoo.com",
+	"password": "admin"
+}
+
+
 ### 1.3.5 Logare utilizator folosind PassportJS
 #### 1.3.5.1 Instalare pachete
 ```node
