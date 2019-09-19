@@ -133,7 +133,7 @@ function register(req, res) {
     });
 }
 ```
-#### 3.5.2 routes.js
+###  3.5.2 routes.js
 ```Javascript
 const express = require('express');
 const router = express.Router();
@@ -153,7 +153,7 @@ const routes = require('./routes');
 app.use('/api', routes);
 ```
 
-### 3.5.4Testare cu Postman
+### 3.5.4 Testare cu Postman
 http://localhost:5000/api/register --> POST method
 ```JSON
 {
