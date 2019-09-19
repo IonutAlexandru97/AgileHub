@@ -136,15 +136,16 @@ app.listen(PORT, () => console.log(`Server started at port : ${PORT}`));
 ```
 
 #### 1.3.3.3 Testare cu Postman
+http://localhost:5000/api/register --> POST method
 
-### 1.3.2 Encriptare parola utilizator
-#### 1.3.2.1 Instalare pachete
+### 1.3.4 Encriptare parola utilizator
+#### 1.3.4.1 Instalare pachete
 ```node
 npm install --save brcyptjs
 ```
 - **_bcryptjs_**: librarie folosita pentru criptarea datelor sub forma de hash  
 
-#### 1.3.2.2 Modificare models/users.js
+#### 1.3.4.2 Modificare models/users.js
 ```Javascript
 'use strict';
 
@@ -184,4 +185,82 @@ module.exports = (sequelize, DataTypes) => {
   return Users;
 };
 ```
+
+### 1.3.5 Logare utilizator folosind PassportJS
+#### 1.3.5.1 Instalare pachete
+```node
+npm install --save passport passport-local
+```
+- **_passport.js_**: este un middleware folosit pentru autentificare
+
+#### 1.3.5.2 Creare config/passport.js
+```Javascript
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var db = require('../models').Users;
+
+passport.use(new LocalStrategy (
+    {
+        usernameField: "email",
+        passwordField: "password"
+    },
+
+    function(req, email, password, done) {
+        db.findOne({
+            where: {
+                email: email
+            }
+        }).then(function(dbUser) {
+            if(!dbUser) {
+                return done(null, false, {
+                    message: "Incorrect email!"
+                });
+            } else if(!dbUser.validPassword(password)) {
+                return done(null, false, {
+                    message: "Incorrect password!"
+                });
+            }
+            return done(null, dbUser);
+        });
+    }
+));
+
+  // In order to help keep authentication state across HTTP requests,
+  // Sequelize needs to serialize and deserialize the user
+passport.serializeUser(function(user, cb) {
+    cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+    cb(null, obj);
+});
+
+module.exports = passport;
+```
+#### 1.3.5.3 Modificare models/users.js
+```Javascript
+  Users.prototype.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
+  };
+```
+
+#### 1.3.5.4 Modificare routes.js
+```Javascript
+const passport = require('./config/passport');
+router.post('/login', passport.authenticate("local"), function(req, res) {
+    if(req.user.username !== null) {
+        res.status(200).json({
+            statusText: 200,
+            message: 'User ' + req.user.username + ' logged in!'
+        });
+    }
+});
+```
+#### 1.3.5.4 Modificare server.js
+```JS
+var passport = require('./config/passport');
+app.use(passport.initialize());
+app.use(passport.session());
+```
+
 
