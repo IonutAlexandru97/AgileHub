@@ -371,14 +371,14 @@ http://localhost:5000/api/register --> POST method
 
 ```
 
-### 1.3.5 Logare utilizator folosind PassportJS
-#### 1.3.5.1 Instalare pachete
+## 3.8  Logare utilizator folosind PassportJS
+### 3.8.1 Instalare pachete
 ```node
 npm install --save passport passport-local
 ```
 - **_passport.js_**: este un middleware folosit pentru autentificare
 
-#### 1.3.5.2 Creare config/passport.js
+### 3.8.2 Creare config/passport.js
 ```Javascript
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -387,7 +387,8 @@ var db = require('../models').Users;
 passport.use(new LocalStrategy (
     {
         usernameField: "email",
-        passwordField: "password"
+        passwordField: "password",
+        passReqToCallback: true
     },
 
     function(req, email, password, done) {
@@ -398,11 +399,11 @@ passport.use(new LocalStrategy (
         }).then(function(dbUser) {
             if(!dbUser) {
                 return done(null, false, {
-                    message: "Incorrect email!"
+                    message: "Unauthorized"
                 });
             } else if(!dbUser.validPassword(password)) {
                 return done(null, false, {
-                    message: "Incorrect password!"
+                    message: "Unauthorized"
                 });
             }
             return done(null, dbUser);
@@ -422,18 +423,18 @@ passport.deserializeUser(function(obj, cb) {
 
 module.exports = passport;
 ```
-#### 1.3.5.3 Modificare models/users.js
+### 3.8.3 Modificare models/users.js
 ```Javascript
   Users.prototype.validPassword = function(password) {
     return bcrypt.compareSync(password, this.password);
   };
 ```
 
-#### 1.3.5.4 Modificare routes.js
+### 3.8.4 Modificare routes.js
 ```Javascript
 const passport = require('./config/passport');
-router.post('/login', passport.authenticate("local"), function(req, res) {
-    if(req.user.username !== null) {
+router.post('/login', passport.authenticate('local'), function(req, res) {
+    if(req.user) {
         res.status(200).json({
             statusText: 200,
             message: 'User ' + req.user.username + ' logged in!'
@@ -441,13 +442,13 @@ router.post('/login', passport.authenticate("local"), function(req, res) {
     }
 });
 ```
-#### 1.3.5.4 Modificare server.js
+### 3.8.5 Modificare server.js
 ```JS
 var passport = require('./config/passport');
 app.use(passport.initialize());
 app.use(passport.session());
 ```
-#### 1.3.5.4 Testare Postman
+### 3.8.6 Testare Postman
 http://localhost:5000/api/login  --> *POST* method
 ```JSON
 {
