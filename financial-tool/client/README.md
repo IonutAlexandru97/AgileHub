@@ -418,3 +418,41 @@ const onSubmit = event => {
     <CopyRight />
 </Box>
 ```
+
+# 5. Creare SignIn
+## 5.1 Creare views/SignIn/SignIn.jsx
+```JSX
+import React from 'react';
+
+function SignIn() {
+    return(
+        <p>SignIn is working!</p>
+    )
+}
+
+export default SignIn;
+```
+
+## 5.2 Creare views/SignIn/index.js
+```JS
+export { default } from './SignIn';
+```
+
+## 5.3 Modificare views/index.js
+```JS
+export { default as SignIn } from './SignIn';
+```
+
+## 5.4 Modificare Routes.jsx
+```JSX
+<Redirect
+exact
+from="/"
+to="/login"
+/>
+<RouteWithoutLayout 
+component={SignInView}
+exact
+path="/login"
+/>
+```
