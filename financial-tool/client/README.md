@@ -329,3 +329,25 @@ function SignUp() {
 
 export default SignUp;
 ```
+
+## 4.1 Modificare views/SignUp.jsx
+```JSX
+const handleFirstNameInputChange = event => {
+        setFirstName(event.target.value);
+    }
+
+    const handleLastNameInputChange = event => {
+        setLastName(event.target.value);
+      }
+      const handleUsernameInputChange = event => {
+        setUsername(event.target.value);
+      }
+      const handleEmailInputChange = event => {
+        setEmail(event.target.value);
+      }
+      const handlePasswordInputChange = event => {
+        setPassword(event.target.value);
+      }
+
+//Adaugar onChange pentru fiecare TextField precedent
+```

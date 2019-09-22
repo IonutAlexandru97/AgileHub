@@ -54,6 +54,23 @@ function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const handleFirstNameInputChange = event => {
+        setFirstName(event.target.value);
+    }
+
+    const handleLastNameInputChange = event => {
+        setLastName(event.target.value);
+      }
+      const handleUsernameInputChange = event => {
+        setUsername(event.target.value);
+      }
+      const handleEmailInputChange = event => {
+        setEmail(event.target.value);
+      }
+      const handlePasswordInputChange = event => {
+        setPassword(event.target.value);
+      }
+
 
     return (
         <Container component="main" maxWidth="xs" >
@@ -78,6 +95,7 @@ function SignUp() {
                                 label="First Name"
                                 autoFocus
                                 value={first_name}
+                                onChange={handleFirstNameInputChange}
                             ></TextField>
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -91,6 +109,7 @@ function SignUp() {
                                 label="Last Name"
                                 autoFocus
                                 value={last_Name}
+                                onChange={handleLastNameInputChange}
                             ></TextField>
                         </Grid>
                         <Grid item xs={12}>
@@ -104,6 +123,7 @@ function SignUp() {
                                 label="Username"
                                 autoFocus
                                 value={username}
+                                onChange={handleUsernameInputChange}
                             ></TextField>
                         </Grid>
                         <Grid item xs={12}>
@@ -117,6 +137,7 @@ function SignUp() {
                                 label="Email"
                                 autoFocus
                                 value={email}
+                                onChange={handleEmailInputChange}
                             ></TextField>
                         </Grid>
                         <Grid item xs={12}>
@@ -131,6 +152,7 @@ function SignUp() {
                                 label="Password"
                                 autoFocus
                                 value={password}
+                                onChange={handlePasswordInputChange}
                             ></TextField>
                         </Grid>
                     </Grid>
