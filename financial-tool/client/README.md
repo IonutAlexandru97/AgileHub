@@ -330,7 +330,7 @@ function SignUp() {
 export default SignUp;
 ```
 
-## 4.1 Modificare views/SignUp.jsx
+## 4.1 Adaugare onChange views/SignUp.jsx
 ```JSX
 const handleFirstNameInputChange = event => {
         setFirstName(event.target.value);
@@ -349,5 +349,18 @@ const handleFirstNameInputChange = event => {
         setPassword(event.target.value);
       }
 
-//Adaugar onChange pentru fiecare TextField precedent
+//Adaugare onChange pentru fiecare TextField precedent
+```
+
+## 4.2 Adaugare buton views/Signup.jxs
+```JSX
+<Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    >
+                        Sign Up
+                    </Button>
 ```

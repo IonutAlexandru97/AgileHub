@@ -156,6 +156,15 @@ function SignUp() {
                             ></TextField>
                         </Grid>
                     </Grid>
+                    <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    >
+                        Sign Up
+                    </Button>
                 </form>
             </div>
         </Container>
