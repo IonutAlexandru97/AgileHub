@@ -49,7 +49,8 @@ npm install --save @material-ui/core @material-ui/icons
 
 ## 2.3 Testare React Material (App.js)
 ```JS
- <Button variant="contained" color="primary">
+import Button from '@material-ui/core/Button';
+<Button variant="contained" color="primary">
       Hello World
-    </Button>
+</Button>
 ```
