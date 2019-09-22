@@ -3,7 +3,7 @@ import { Switch, Redirect } from 'react-router-dom';
 
 import { RouteWithoutLayout } from './components';
 import { 
-    SignIn as SignInView
+    SignUp as SignUpView
 } from './views';
 
 const Routes = () => {
@@ -15,7 +15,7 @@ const Routes = () => {
             to="/login"
             />
             <RouteWithoutLayout
-            component={SignInView}
+            component={SignUpView}
             exact
             path="/login"
             />

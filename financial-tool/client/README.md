@@ -96,26 +96,26 @@ export { default } from './RouteWithoutLayout';
 export { default as RouteWithoutLayout } from './RouteWithoutLayout';
 ```
 
-## 3.5 Creare views/SignIn/SignIn.jsx
+## 3.5 Creare views/SignUp/SignUp.jsx
 ```JSX
 import React from 'react';
-function SignIn() {
+function SignUp() {
     return(
-        <p>Signin is working!</p>
+        <p>SignUp is working!</p>
     )
 }
 
-export default SignIn;
+export default SignUp;
 ```
 
-## 3.6 Creare views/SignIn/index.js
+## 3.6 Creare views/SignUp/index.js
 ```JS
-export { default } from './SignIn';
+export { default } from './SignUp';
 ```
 
 ## 3.7 Creare views/index.js
 ```JS
-export { default as SignIn } from './SignIn';
+export { default as Signup } from './SignUp';
 ```
 
 ## 3.8 Creare Routes.jsx
@@ -125,7 +125,7 @@ import { Switch, Redirect } from 'react-router-dom';
 
 import { RouteWithoutLayout } from './components';
 import { 
-    SignIn as SignInView
+    SignUp as SignUpView
 } from './views';
 
 const Routes = () => {
@@ -137,7 +137,7 @@ const Routes = () => {
             to="/login"
             />
             <RouteWithoutLayout
-            component={SignInView}
+            component={SignUpView}
             exact
             path="/login"
             />
