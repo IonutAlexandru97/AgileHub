@@ -12,12 +12,12 @@ const Routes = () => {
             <Redirect
             exact
             from="/"
-            to="/login"
+            to="/register"
             />
             <RouteWithoutLayout
             component={SignUpView}
             exact
-            path="/login"
+            path="/register"
             />
         </Switch>
     )
