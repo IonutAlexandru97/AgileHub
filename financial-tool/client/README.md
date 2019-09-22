@@ -54,3 +54,130 @@ import Button from '@material-ui/core/Button';
       Hello World
 </Button>
 ```
+
+# 3. Rutare pentru Register
+## 3.1 Instalare pachete
+```node
+npm intall --save react-router-dom
+```
+## 3.2 Creare components/RouteWithoutLayout/RouteWithoutLayout.jsx
+```JSX
+import React from 'react';
+import { Route } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+const RouteWithoutLayout = props => {
+    const { component: Component, ...rest } = props;
+
+    return (
+        <Route
+        {...rest}
+        render={matchProps => (
+            <Component {...matchProps} />
+        )}
+        />
+    );
+};
+
+RouteWithoutLayout.propTypes = {
+    component: PropTypes.any.isRequired,
+    path: PropTypes.string
+};
+
+export default RouteWithoutLayout;
+```
+## 3.3 Creare components/RouteWithoutLayout/index.js
+```JS
+export { default } from './RouteWithoutLayout';
+```
+
+## 3.4 Creare components/index.js
+```JS
+export { default as RouteWithoutLayout } from './RouteWithoutLayout';
+```
+
+## 3.5 Creare views/SignIn/SignIn.jsx
+```JSX
+import React from 'react';
+function SignIn() {
+    return(
+        <p>Signin is working!</p>
+    )
+}
+
+export default SignIn;
+```
+
+## 3.6 Creare views/SignIn/index.js
+```JS
+export { default } from './SignIn';
+```
+
+## 3.7 Creare views/index.js
+```JS
+export { default as SignIn } from './SignIn';
+```
+
+## 3.8 Creare Routes.jsx
+```JSX
+import React from 'react';
+import { Switch, Redirect } from 'react-router-dom';
+
+import { RouteWithoutLayout } from './components';
+import { 
+    SignIn as SignInView
+} from './views';
+
+const Routes = () => {
+    return (
+        <Switch>
+            <Redirect
+            exact
+            from="/"
+            to="/login"
+            />
+            <RouteWithoutLayout
+            component={SignInView}
+            exact
+            path="/login"
+            />
+        </Switch>
+    )
+}
+
+export default Routes;
+```
+
+## 3.9 Modificare App.js
+```JS
+import React, { Component } from 'react';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+
+import Routes from './Routes';
+
+const browserHistory = createBrowserHistory();
+
+export default class App extends Component {
+  render() {
+    return (
+      <Router history={browserHistory}>
+        <Routes />
+      </Router>
+    )
+  }
+}
+```
+
+## 3.10 Modificare index.js
+```JS
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import * as serviceWorker from './serviceWorker';
+import App from './App';
+
+ReactDOM.render(<App />, document.getElementById('root'));
+
+serviceWorker.register();
+```

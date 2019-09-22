@@ -1,12 +1,18 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
+import React, { Component } from 'react';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 
-function App() {
-  return (
-    <Button variant="contained" color="primary">
-      Hello World
-    </Button>
-  );
+import Routes from './Routes';
+
+const browserHistory = createBrowserHistory();
+
+export default class App extends Component {
+  render() {
+    return (
+      <Router history={browserHistory}>
+        <Routes />
+      </Router>
+    )
+  }
 }
 
-export default App;

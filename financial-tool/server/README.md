@@ -101,7 +101,7 @@ app.listen(PORT, () => console.log(`Server started at port: ${PORT}`));
 ## 3.3 Creare fisier .jshintrc
 ```JSON
  {
-    "esversion": 8
+    "esversion": 9
 }
 ```
 

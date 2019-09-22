@@ -1,0 +1,1 @@
+export { default as RouteWithoutLayout } from './RouteWithoutLayout';
