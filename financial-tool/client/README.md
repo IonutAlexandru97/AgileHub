@@ -352,7 +352,7 @@ const handleFirstNameInputChange = event => {
 //Adaugare onChange pentru fiecare TextField precedent
 ```
 
-## 4.2 Adaugare buton views/Signup.jxs
+## 4.2 Adaugare buton views/SignUp.jxs
 ```JSX
 <Button
                     type="submit"
@@ -363,4 +363,42 @@ const handleFirstNameInputChange = event => {
                     >
                         Sign Up
                     </Button>
+```
+
+## 4.3 Integrare cu SignUp cu API 
+### 4.3.1 Modificare package.json
+```JSON
+{
+  "proxy": "http://localhost:5000",  
+}
+```
+### 4.3.2 Adaugare functie onSubmit()
+```JSX
+const onSubmit = event => {
+          event.preventDefault();
+          fetch('/api/register', {
+              method: 'POST',
+              body: JSON.stringify({
+                first_name,
+                last_name,
+                username,
+                email,
+                password
+              }),
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          }).then(res => {
+              if(res.status === 200){
+                history.push('/home');
+                res.json().then(function(object) {
+                    alert(object.message);
+                })
+              }else{
+                res.json().then(function (object) {
+                    alert('Error: ' + res.status + ' ' + res.statusText + ' ' + object.message);
+                })
+              }
+          })
+      }
 ```

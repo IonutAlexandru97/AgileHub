@@ -46,10 +46,11 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function SignUp() {
+const SignUp = props => {
+    const { history } = props;
     const classes = useStyles();
     const [first_name, setFirstName] = useState('');
-    const [last_Name, setLastName] = useState('');
+    const [last_name, setLastName] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -71,6 +72,34 @@ function SignUp() {
         setPassword(event.target.value);
       }
 
+      const onSubmit = event => {
+          event.preventDefault();
+          fetch('/api/register', {
+              method: 'POST',
+              body: JSON.stringify({
+                first_name,
+                last_name,
+                username,
+                email,
+                password
+              }),
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          }).then(res => {
+              if(res.status === 200){
+                history.push('/home');
+                res.json().then(function(object) {
+                    alert(object.message);
+                })
+              }else{
+                res.json().then(function (object) {
+                    alert('Error: ' + res.status + ' ' + res.statusText + ' ' + object.message);
+                })
+              }
+          })
+      }
+
 
     return (
         <Container component="main" maxWidth="xs" >
@@ -82,7 +111,7 @@ function SignUp() {
                 <Typography component="h1" variant="h5">
                     Sign Up
                </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} noValidate onSubmit={onSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -108,7 +137,7 @@ function SignUp() {
                                 id="lastName"
                                 label="Last Name"
                                 autoFocus
-                                value={last_Name}
+                                value={last_name}
                                 onChange={handleLastNameInputChange}
                             ></TextField>
                         </Grid>
