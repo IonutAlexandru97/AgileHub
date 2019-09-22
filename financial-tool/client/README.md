@@ -390,7 +390,7 @@ const onSubmit = event => {
               }
           }).then(res => {
               if(res.status === 200){
-                history.push('/home');
+                history.push('/');
                 res.json().then(function(object) {
                     alert(object.message);
                 })
@@ -401,4 +401,19 @@ const onSubmit = event => {
               }
           })
       }
+```
+
+## 4.4 Adaugare copyright si routing catre signin
+```JSX
+ <Grid container justify="flex-end">
+    <Grid item>
+        <Link href="/login" variant="body2">
+         Already have an account? Sign in
+        </Link>
+    </Grid>
+</Grid>
+
+<Box mt={5}>
+    <CopyRight />
+</Box>
 ```

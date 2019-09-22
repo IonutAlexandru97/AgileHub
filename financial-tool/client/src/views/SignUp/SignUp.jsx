@@ -1,5 +1,4 @@
 import React, { Component, useState } from 'react';
-import { Link as withRouter } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -7,6 +6,8 @@ import { Typography, Link, Grid, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Box from '@material-ui/core/Box';
+
 
 function CopyRight() {
     return (
@@ -88,7 +89,7 @@ const SignUp = props => {
               }
           }).then(res => {
               if(res.status === 200){
-                history.push('/home');
+                history.push('/');
                 res.json().then(function(object) {
                     alert(object.message);
                 })
@@ -194,8 +195,18 @@ const SignUp = props => {
                     >
                         Sign Up
                     </Button>
+                    <Grid container justify="flex-end">
+                        <Grid item>
+                            <Link href="/login" variant="body2">
+                                Already have an account? Sign in
+                            </Link>
+                        </Grid>
+                    </Grid>
                 </form>
             </div>
+            <Box mt={5}>
+                <CopyRight />
+            </Box>
         </Container>
     )
 }
