@@ -53,7 +53,8 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-function SignIn() {
+const SignIn = props => {
+   const { history } = props;
    const classes = useStyles();
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
@@ -66,6 +67,29 @@ function SignIn() {
     setPassword(event.target.value);
     }   
 
+    const onSubmit = event => {
+        event.preventDefault();
+        fetch('/api/login', {
+            method: 'POST',
+            body: JSON.stringify({
+                email,
+                password
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            if(res.status === 200){
+                history.push('/resources');
+               res.json().then(function(object){
+                   alert(object.message);
+                 })
+             }else{
+                 alert('Error: ' + res.status + ' ' + res.statusText);
+             }
+        })
+    }
+
    return (
        <Grid container component="main" className={classes.root}>
            <CssBaseline />
@@ -76,7 +100,7 @@ function SignIn() {
                        <LockOutlinedIcon />
                    </Avatar>
                    <Typography component="h1" variant="h5">Sign In</Typography>
-                   <form className={classes.form} noValidate>
+                   <form className={classes.form} noValidate onSubmit={onSubmit}>
                         <TextField
                         variant="outlined"
                         margin="normal"

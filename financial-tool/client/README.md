@@ -596,3 +596,29 @@ className={classes.submit}
     <CopyRight />
 </Box>
 ```
+
+## 5.8 Integrare cu API
+```JSX
+const onSubmit = event => {
+    event.preventDefault();
+    fetch('/api/login', {
+        method: 'POST',
+        body: JSON.stringify({
+            email,
+            password
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(res => {
+        if(res.status === 200){
+            history.push('/resources');
+           res.json().then(function(object){
+               alert(object.message);
+             })
+         }else{
+             alert('Error: ' + res.status + ' ' + res.statusText);
+         }
+    })
+}
+```
