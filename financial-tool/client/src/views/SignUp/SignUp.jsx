@@ -96,6 +96,7 @@ const SignUp = props => {
               }else{
                 res.json().then(function (object) {
                     alert('Error: ' + res.status + ' ' + res.statusText + ' ' + object.message);
+                    history.push('/register')
                 })
               }
           })
