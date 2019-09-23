@@ -457,5 +457,238 @@ http://localhost:5000/api/login  --> *POST* method
 }
 ```
 
+# 4. Resources
+## 4.1 Creare model Resources
+```node
+npx sequelize model:generate --name Resources --attributes name:String,comment:String,main_cluster:String,main_apps:String,rate:Float,skills:String
+```
+## 4.2 Editare models/resources.js
+```JS
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+  const Resources = sequelize.define('Resources', {
+    id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
+      unique: true,
+      validate: {
+        notEmpty: true
+      }
+    },
+    name: DataTypes.STRING,
+    comment: DataTypes.STRING,
+    main_cluster: DataTypes.STRING,
+    main_apps: DataTypes.STRING,
+    rate: {
+      type: DataTypes.FLOAT,
+      defaultValue: 0.00,
+      validate: {
+        isFloat: true
+      }
+    },
+    skills: DataTypes.STRING
+  }, {});
+  Resources.associate = function(models) {
+    // associations can be defined here
+  };
+  return Resources;
+};
+```
+
+## 4.3 Add Resource API
+### 4.3.1 Creare controllers/resources.js
+```JS
+const resources = require('../models').Resources;
+
+module.exports = {
+    addResource
+};
+
+function addResource (req, res) {
+    resources.create({
+        name: req.body.name,
+        comment: req.body.comment,
+        main_cluster: req.body.main_cluster,
+        main_apps: req.body.main_apps,
+        rate: req.body.rate,
+        skills: req.body.skills,
+    }).then(response => res.status(200).send({
+        message: 'Resource with id ' + response.id + ' was added!'
+    })).catch(error => {
+        res.json(error);
+    });
+}
+```
+### 4.3.2 Modificare routes.js
+```JS
+const resourcesController = require('./controllers/resources');
+
+router.post('/resource', resourcesController.addResource);
+```
+### 4.3.3 Testare postman 
+- POST Method --> http://localhost:5000/api/resources
+```JSON
+{
+	"name": "Ionut Alexandru Candea",
+	"comment": "This is a comment",
+	"main_cluster": "Main Cluster",
+	"main_apps": "Main Apps",
+	"rate": "200",
+	"skills": "Dev"
+}
+```
+### 4.3.4 Testare Postman
+- POST Method --> http://localhost:5000/api/resources
+```JSON
+{
+	"name": "Ionut Alexandru Candea",
+	"comment": "This is a comment",
+	"main_cluster": "Main Cluster",
+	"main_apps": "Main Apps",
+	"rate": "da",
+	"skills": "Dev"
+}
+```
+
+### 4.3.5 Modificare controllers/resources.js
+```JS
+.catch(error => {
+  for(var i in error.errors) {
+      if(error.errors[i].message === 'Validation isFloat on rate failed') {
+          res.status(403).json({
+              statusText: 403 + ' Forbidden!',
+              message: 'Rate must be FLOAT type!',
+              error_message: error.errors[i].message
+          });
+      }else {
+          res.json(error);
+      }
+  };
+```
+### 4.3.6 Testare Postman
+- POST Method --> http://localhost:5000/api/resources
+```JSON
+{
+	"name": "Ionut Alexandru Candea",
+	"comment": "This is a comment",
+	"main_cluster": "Main Cluster",
+	"main_apps": "Main Apps",
+	"rate": "da",
+	"skills": "Dev"
+}
+```
+
+# 5. Get All Resources API
+## 5.1 Modificare controllers/resources.js
+```JS
+function getAllResources(req, res) {
+    resources.findAll().then(result => {
+        res.status(200).send({
+            message: 'Resources were fetched from database!',
+            data: result
+        });
+    }).catch(error => {
+        res.json(error);
+    });
+}
+```
+## 5.2 Modificare routes.js
+```JS
+router.get('/resources', resourcesController.getAllResources);
+```
+## 5.3 Testare Postman
+- GET Method --> http://localhost:5000/api/resources
+
+# 6. Update Resource API
+## 6.1 Modificare controllers/resources.js
+```JS
+function updateResource(req, res) {
+    resources.findOne({
+        where: {
+            id: req.params.id
+        }
+    }).then(result => {
+        if(result != null) {
+            resources.update({
+                name: req.body.name,
+                comment: req.body.comment,
+                main_cluster: req.body.main_cluster,
+                main_apps: req.body.main_apps,
+                rate: req.body.rate,
+                skills: req.body.skills
+            },
+            {
+                where: {
+                    id: req.params.id
+                }
+            }).then(() => {
+                res.status(200).send({
+                    message: 'Resource with id ' + req.params.id + ' was updated!'
+                });
+            }).catch(error => {
+                res.json(error);
+            });
+        }else{
+            res.status(404).send({
+                statusText: 404 + ' Not Found!',
+                message: 'Resource with id ' + req.params.id + ' was not found!'
+            });
+        }
+    });
+}
+```
+
+## 6.2 Modificare routes.js
+```JS
+router.put('/resources/:id', resourcesController.updateResource);
+```
+- Testare cu Postman
+
+## 6.3 Modificare controllers/resources.js
+```JS
+for (var i in error.errors) {
+  if (error.errors[i].message === 'Validation isFloat on rate failed') {
+      res.status(403).json({
+          statusText: 403 + ' Forbidden!',
+          message: 'Rate must be FLOAT type!',
+          error_message: error.errors[i].message
+      });
+  } else {
+      res.json(error);
+  }
+```
+- Testare POSTMAN
+
+# 7. Delete Resource API
+```JS
+function deleteResource(req, res) {
+    resources.findOne({
+        where: {
+            id: req.params.id
+        }
+    }).then(result => {
+        if (result != null) {
+            resource.destroy({
+                where: {
+                    id: result.id
+                }
+            }).then(() => {
+                res.status(200).send({
+                    message: 'Resource with id ' + req.params.id + ' was deleted!'
+                });
+            });
+        } else {
+            res.status(404).send({
+                statusText: 404 + ' Not Found!',
+                message: 'Resource with id ' + req.params.id + ' was not found!',
+            });
+        }
+    });
+
+}
+```
+
 
 
