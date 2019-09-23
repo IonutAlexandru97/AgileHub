@@ -623,3 +623,52 @@ const onSubmit = event => {
 }
 ```
 
+# 6. Resources Page
+## 6.1 Instalare pachere
+```node
+npm install --save material-table
+```
+## 6.2 Creare views/Resources/Resources.jsx
+```JSX
+import React, { useState } from 'react';
+import MaterialTable from 'material-table';
+
+export default function Resources() {
+    const [state, setState] = React.useState({
+        columns: [
+          { title: 'Name', field: 'name' },
+          { title: 'Comment', field: 'comment' },
+          { title: 'Main Cluster', field: 'main_cluster' },
+          { title: 'Main Apps', field: 'main_apps' },
+          {
+            field: 'rate',
+            title: 'Rate',
+          },
+          { title: 'Skills', field: 'skills' },
+        ]
+      });
+
+      return (
+          <MaterialTable
+          title="Resources"
+          columns={state.columns}
+          />
+      );
+}
+```
+## 6.3 Creare views/Resources/index.js
+```JS
+export { default } from './Resources';
+```
+## 6.4 Modificare views/index.js
+```JS
+export { default as Resources } from './Resources';
+```
+## 6.5 Modificare Routes.jsx
+```JSX
+<RouteWithoutLayout
+component={ResourcesViews}
+exact
+path="/resources"
+/>
+```

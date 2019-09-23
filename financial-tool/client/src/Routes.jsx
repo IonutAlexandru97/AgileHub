@@ -4,7 +4,8 @@ import { Switch, Redirect } from 'react-router-dom';
 import { RouteWithoutLayout } from './components';
 import { 
     SignUp as SignUpView,
-    SignIn as SignInView
+    SignIn as SignInView,
+    Resources as ResourcesViews
 } from './views';
 
 const Routes = () => {
@@ -24,6 +25,11 @@ const Routes = () => {
             component={SignInView}
             exact
             path="/login"
+            />
+            <RouteWithoutLayout
+            component={ResourcesViews}
+            exact
+            path="/resources"
             />
         </Switch>
     )
