@@ -799,10 +799,9 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import TimelineIcon from '@material-ui/icons/Timeline';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -812,7 +811,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   button: {
-    marginLeft: theme.spacing(1)
+    marginLeft: 0
   }
 }));
 
@@ -826,17 +825,7 @@ const TopBar = props => {
       className={clsx(classes.root, className)}
     >
       <Toolbar>
-        <RouterLink to="/resources">
-          <img
-            alt="logo"
-            src="/images/logos/risks.svg"
-            height="50px"
-          />
-        </RouterLink >
-
-        <div className={classes.flexGrow} />
-
-        <RouterLink to="/resources"
+      <RouterLink to="/resources"
           style={{ textDecoration: 'none', color: 'white' }}>
           <IconButton
             className={classes.button}
@@ -845,8 +834,17 @@ const TopBar = props => {
             <GroupAddIcon />
           </IconButton>
         </RouterLink>
-
-
+        <RouterLink to="/resources/availability"
+          style={{ textDecoration: 'none', color: 'white' }}
+        >
+          <IconButton
+            className={classes.button}
+            color="inherit"
+          >
+            <TimelineIcon />
+          </IconButton>
+        </RouterLink>
+        <div className={classes.flexGrow} />
         <RouterLink to="/"
           style={{ textDecoration: 'none', color: 'white' }}
         >
@@ -857,7 +855,6 @@ const TopBar = props => {
             <InputIcon />
           </IconButton>
         </RouterLink>
-
       </Toolbar>
     </AppBar>
   )
@@ -934,14 +931,4 @@ exact
 layout={MainLayout}
 path="/resources"
 />
-```
-### 8.1.10 Adaugare Logo
-### 8.1.11 Adaugare Button Logout
-```JSX
- <IconButton
-className={classes.signOutButton}
-color="inherit"
->
-  <InputIcon />
-</IconButton>
 ```

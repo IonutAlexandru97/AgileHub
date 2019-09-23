@@ -7,16 +7,6 @@ import { useMediaQuery } from '@material-ui/core';
 import { TopBar } from './components';
 
 const useStyles = makeStyles(theme => ({
-    root: {
-      paddingTop: 56,
-      height: '100%',
-      [theme.breakpoints.up('sm')]: {
-        paddingTop: 64
-      }
-    },
-    shiftContent: {
-      paddingLeft: 240
-    },
     content: {
       height: '100%'
     }
@@ -27,9 +17,7 @@ const useStyles = makeStyles(theme => ({
       const classes = useStyles();
 
       return (
-          <div className={clsx({
-              [classes.root]:true
-          })}>
+          <div>
               <TopBar />
               <main className={classes.content}>
                   {children}

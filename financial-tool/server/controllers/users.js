@@ -14,6 +14,7 @@ function register(req, res) {
     }).then(response => res.status(200).send ({
         message: 'User ' + response.username + ' has been created!',
     })).catch(error => {
+       
         for(var i in error.errors){
             if(error.errors[i].type === 'unique violation'){
                 res.status(403).json({
