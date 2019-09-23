@@ -7,50 +7,69 @@ import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 
 const useStyles = makeStyles(theme => ({
-    root: {
-      boxShadow: 'none'
-    },
-    flexGrow: {
-      flexGrow: 1
-    },
-    signOutButton: {
-      marginLeft: theme.spacing(1)
-    }
-  }));
+  root: {
+    boxShadow: 'none'
+  },
+  flexGrow: {
+    flexGrow: 1
+  },
+  button: {
+    marginLeft: theme.spacing(1)
+  }
+}));
 
-  const TopBar = props => {
-      const { className, ...rest} = props;
-      const classes = useStyles();
+const TopBar = props => {
+  const { className, ...rest } = props;
+  const classes = useStyles();
 
-      return(
-          <AppBar
-          {...rest}
-          className={clsx(classes.root, className)}
+  return (
+    <AppBar
+      {...rest}
+      className={clsx(classes.root, className)}
+    >
+      <Toolbar>
+        <RouterLink to="/resources">
+          <img
+            alt="logo"
+            src="/images/logos/risks.svg"
+            height="50px"
+          />
+        </RouterLink >
+
+        <div className={classes.flexGrow} />
+
+        <RouterLink to="/resources"
+          style={{ textDecoration: 'none', color: 'white' }}>
+          <IconButton
+            className={classes.button}
+            color="inherit"
           >
-              <Toolbar>
-                  <RouterLink to="/resources">
-                      <img
-                      alt="logo"
-                      src="/images/logos/risks.svg"
-                      height="50px"
-                      />
-                  </RouterLink>
-                  <div className={classes.flexGrow} />
-                  <IconButton
-                  className={classes.signOutButton}
-                  color="inherit"
-                  >
-                    <InputIcon />
-                  </IconButton>
-              </Toolbar>
-        </AppBar>
-      )
-  }
+            <GroupAddIcon />
+          </IconButton>
+        </RouterLink>
 
-  TopBar.propTypes = {
-      className: PropTypes.string
-  }
 
-  export default TopBar;
+        <RouterLink to="/"
+          style={{ textDecoration: 'none', color: 'white' }}
+        >
+          <IconButton
+            className={classes.button}
+            color="inherit"
+          >
+            <InputIcon />
+          </IconButton>
+        </RouterLink>
+
+      </Toolbar>
+    </AppBar>
+  )
+}
+
+TopBar.propTypes = {
+  className: PropTypes.string
+}
+
+export default TopBar;
