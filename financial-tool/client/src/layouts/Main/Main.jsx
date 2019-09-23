@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { useMediaQuery } from '@material-ui/core';
 
 import { TopBar } from './components';
 
 const useStyles = makeStyles(theme => ({
+    root: {
+        paddingTop: 56,
+        height: '100%',
+        [theme.breakpoints.up('sm')]: {
+          paddingTop: 64
+        }
+      },
     content: {
       height: '100%'
     }
@@ -17,7 +22,7 @@ const useStyles = makeStyles(theme => ({
       const classes = useStyles();
 
       return (
-          <div>
+          <div className={classes.root}>  
               <TopBar />
               <main className={classes.content}>
                   {children}
