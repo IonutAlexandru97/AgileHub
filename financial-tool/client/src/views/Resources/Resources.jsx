@@ -100,7 +100,6 @@ useEffect(() => {
                   });
                 }
               });
-              window.location.reload();
             },
             onRowDelete: (rowData) => {
               fetch(`${api}/${rowData.key}`, {

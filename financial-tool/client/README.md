@@ -788,3 +788,135 @@ options={{
 ```JSX
 render: rowData => <p>{rowData.rate} &euro;</p>
 ```
+
+# 8. Layout
+# 8.1 Topbar
+### 8.1.1 layouts/Main/components/Topbar/Topbar.jsx
+```JSX
+import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
+import InputIcon from '@material-ui/icons/Input';
+
+const useStyles = makeStyles(theme => ({
+    root: {
+      boxShadow: 'none'
+    },
+    flexGrow: {
+      flexGrow: 1
+    },
+    signOutButton: {
+      marginLeft: theme.spacing(1)
+    }
+  }));
+
+  const TopBar = props => {
+      const { className, ...rest} = props;
+      const classes = useStyles();
+
+      return(
+          <AppBar
+          {...rest}
+          className={clsx(classes.root, className)}
+          >
+              <Toolbar>
+                  <RouterLink to="/resources">
+                      <img
+                      alt="logo"
+                      src="/images/logos/logo.svg"
+                      height="30px"
+                      />
+                  </RouterLink>
+                  <div className={classes.flexGrow} />
+              </Toolbar>
+        </AppBar>
+      )
+  }
+
+  TopBar.propTypes = {
+      className: PropTypes.string
+  }
+
+  export default TopBar;
+```
+### 8.1.2 layouts/Main/components/Topbar/index.js
+```JS
+export { default } from './Topbar';
+```
+### 8.1.3 layouts/Main/components/index.js
+```JS
+export { default as TopBar } from './Topbar';
+```
+### 8.1.4 layouts/Main/index.js
+```JS
+export { default } from './Main';
+```
+### 8.1.5 layouts/index.js
+```JS
+export { default } from './Main';
+```
+### 8.1.6 components/RouteWithLayout/RouteWithLayout.jsx
+```JSX
+import React from 'react';
+import { Route } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+const RouteWithLayout = props => {
+  const { layout: Layout, component: Component, ...rest } = props;
+
+  return (
+    <Route
+      {...rest}
+      render={matchProps => (
+        <Layout>
+          <Component {...matchProps} />
+        </Layout>
+      )}
+    />
+  );
+};
+
+RouteWithLayout.propTypes = {
+  component: PropTypes.any.isRequired,
+  layout: PropTypes.any.isRequired,
+  path: PropTypes.string
+};
+
+export default RouteWithLayout;
+```
+
+### 8.1.7 components/RouteWithLayout/index.js
+```JS
+export { default } from './RouteWithLayout';
+```
+### 8.1.8 components/index.js
+```JS
+export { default as RouteWithLayout } from './RouteWithLayout';
+```
+### 8.1.9 Routes.jsx
+```JSX
+import { RouteWithLayout } from './components';
+import { Main as MainLayout } from './layouts';
+
+<RouteWithLayout
+component={ResourcesViews}
+exact
+layout={MainLayout}
+path="/resources"
+/>
+```
+### 8.1.10 Adaugare Logo
+### 8.1.11 Adaugare Button Logout
+```JSX
+ <IconButton
+className={classes.signOutButton}
+color="inherit"
+>
+  <InputIcon />
+</IconButton>
+```
