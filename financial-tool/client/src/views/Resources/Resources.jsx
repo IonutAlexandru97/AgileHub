@@ -15,6 +15,7 @@ const [state, setState] = React.useState({
           {
             field: 'rate',
             title: 'Rate',
+            render: rowData => <p>{rowData.rate} &euro;</p>
           },
           { title: 'Skills', field: 'skills' },
         ]
@@ -32,6 +33,10 @@ useEffect(() => {
           <MaterialTable
           title="Resources"
           columns={state.columns}
+          options={{
+            filtering: true,
+            grouping: true
+          }}
           data={values.data.map(row => (
             {
               key: row.id,

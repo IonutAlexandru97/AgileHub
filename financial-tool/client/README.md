@@ -775,3 +775,16 @@ onRowDelete: (rowData) => {
              window.location.reload();
            }
 ```
+
+## 7.7 Adaugare filtru si grupare -->  views/Resources/Resources.jsx
+```JSX
+options={{
+        filtering: true,
+        grouping: true
+      }}
+```
+
+## 7.8 Adaugare semnul euro --> views/Resources/Resources.jsx
+```JSX
+render: rowData => <p>{rowData.rate} &euro;</p>
+```
