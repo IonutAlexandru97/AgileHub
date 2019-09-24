@@ -973,3 +973,62 @@ layout={MainLayout}
 path="/resources"
 />
 ```
+
+# 9. Resource Availability View
+## 9.1 Initial Table Component
+### 9.1.1 views/Resource-Availability/components/Table/Table.jsx
+```JSX
+import React from 'react';
+
+function TableComponent() {
+    return(
+        <p>Table is working</p>
+    )
+
+}
+
+export default TableComponent;
+```
+### 9.1.2 views/Resource-Availability/components/Table/index.js
+```JS
+export { default } from './Table';
+```
+### 9.1.3 views/Resource-Availability/components/index.js
+```JS
+export { default as TableComponent } from './Table';
+```
+### 9.1.4 views/Resource-Availability/Resource-Availability.jsx
+```JSX
+import React from 'react';
+
+import { TableComponent as TableView } from './components';
+
+export default function Resource_Availability() {
+    return(
+        <div>
+            <TableView />
+        </div>
+    )
+}
+```
+### 9.1.4 views/Resource-Availability/index.js
+```JS
+export { default } from './Resource-Availability';
+```
+### 9.1.5 views/index.js
+```JS
+export { default as Resource_Availability } from './Resource-Availability';
+```
+### 9.1.6 Routes.jsx
+```JSX
+import { 
+Resource_Availability as ResourceAvailabilityView
+} from './views';
+
+<RouteWithLayout
+component={ResourceAvailabilityView}
+exact
+layout={MainLayout}
+path="/resources/availability"
+/>
+```

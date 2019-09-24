@@ -7,7 +7,8 @@ import { Main as MainLayout } from './layouts';
 import { 
     SignUp as SignUpView,
     SignIn as SignInView,
-    Resources as ResourcesViews
+    Resources as ResourcesViews,
+    Resource_Availability as ResourceAvailabilityView
 } from './views';
 
 const Routes = () => {
@@ -33,6 +34,12 @@ const Routes = () => {
             exact
             layout={MainLayout}
             path="/resources"
+            />
+            <RouteWithLayout
+            component={ResourceAvailabilityView}
+            exact
+            layout={MainLayout}
+            path="/resources/availability"
             />
         </Switch>
     )

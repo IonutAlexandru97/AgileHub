@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   }
 
   Main.propTypes = {
-      children: PropTypes.node
+      children: PropTypes.node,
   }
 
   export default Main;
