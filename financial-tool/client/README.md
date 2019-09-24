@@ -1110,3 +1110,58 @@ function TableComponent() {
 
 export default TableComponent;
 ```
+
+## 9.3 Initial Add Button
+### 9.3.1 views/Resource-Availability/components/Button/components/AddButton/AddButton.jsx
+```JSX
+import React from 'react';
+
+export default function AddButton() {
+    return(
+        <p>Add Button is working!</p>
+    )
+}
+```
+### 9.3.2 views/Resource-Availability/components/Button/components/AddButton/index.js
+```JS
+export { default } from './AddButton';
+```
+### 9.3.3 views/Resource-Availability/components/Button/components/index.js
+```JS
+export { default as AddButton } from './AddButton';
+```
+### 9.3.4 views/Resource-Availability/components/Button/Button.jsx
+```JSX
+import React from 'react';
+
+import { AddButton } from './components';
+
+export default function ButtonComponent() {
+    return(
+        <div>
+            <AddButton />
+        </div>
+    )
+}
+```
+### 9.3.5 views/Resource-Availability/components/Button/index.js
+```JS
+export { default } from './Button';
+```
+### 9.3.6 views/Resource-Availability/components/index.js
+```JS
+export { default as Button } from './Button';
+```
+
+### 9.3.7 views/Resource-Availability/Resource-Availability.jsx
+```JSX
+import {
+    TableComponent as TableView,
+    Button as ButtonView
+} from './components';
+
+<div>
+   <ButtonView />
+   <TableView />
+ </div>
+```

@@ -1,10 +1,14 @@
 import React from 'react';
 
-import { TableComponent as TableView } from './components';
+import {
+    TableComponent as TableView,
+    Button as ButtonView
+} from './components';
 
 export default function Resource_Availability() {
-    return(
+    return (
         <div>
+            <ButtonView />
             <TableView />
         </div>
     )
