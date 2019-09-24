@@ -809,5 +809,120 @@ function addResource (req, res) {
 }
 ```
 
+# 9. Availability API
+## 9.1 Get ALL
+### 9.1.1 controllers/availability.js
+```JS
+const availability = require('../models').Availability;
+const resources = require('../models').Resources;
+
+module.exports = {
+    getAll
+};
+
+function getAll (req, res) {
+    resources.findAll({
+        include: [{
+            model: availability,
+            as: 'availabilities'
+        }]
+    }).then(result => {
+        res.status(200).send(result);
+    }).catch(error => {
+        res.json(error);
+    });
+}
+```
+
+### 9.1.2 routes.js
+```JS
+const availabilityController = require('./controllers/availability');
+// Availability controller
+router.get('/resources/availability', availabilityController.getAll);
+```
+- Postman GET Method --> localhost:5000/api/resources/availability
+
+## 9.2 AddAvailability
+### 9.2.1 controllers/availability.js
+```JS
+function addAvailability (req, res) {
+    availability.create({
+        resourceId: req.params.id,
+        availability: req.body.availability,
+        month: req.body.month
+    }).then(result => {
+        res.status(200).send({
+            message: result
+        });
+    }).catch(error => {
+        res.json(error);
+    });
+}
+```
+
+### 9.2.1 routes.js
+```JS
+router.post('/resources/availability/:id', availabilityController.addAvailability);
+```
+- Postman POST Method --> http://localhost:5000/api/resources/availability/:id
+```JSON
+{
+	"availability": "8",
+	"month": "2019-08-01"
+}
+```
+
+## 9.3 Update Availability
+### 9.3.1 controllers/availability.js
+```JS
+function updateAvailability (req, res) {
+    availability.update({
+        availability: req.body.availability
+    }, {
+        where: {
+            id: req.params.id
+        }
+    }).then(() => {
+        res.status(200).send({
+            message: 'Availability was updated!'
+        });
+    }).catch(error => {
+        res.json(error);
+    });
+}
+```
+### 9.3.2 routes.js
+```JS
+router.put('/resources/availability/:id', availabilityController.updateAvailability);
+```
+- Postman PUT method --> http://localhost:5000/api/resources/availability/:id
+```JSON
+{
+	"availability": "8",
+	"month": "2019-08-01"
+}
+```
+
+## 9.4 Get By Resource ID
+### 9.4.1 controllers/availability.js
+```JS
+function getByResourceId (req, res) {
+    availability.findAll({
+        where: {
+            resourceId: req.params.resourceId
+        }
+    }).then(result => {
+        res.status(200).json(result);
+    }).catch(error => {
+        res.json(error);
+    });
+}
+```
+### 9.4.2 routes.js
+```JS
+router.get('/resources/availability/:resourceId', availabilityController.getByResourceId);
+```
+- Postman GET method --> localhost:5000/api/resources/availability/:id
+
 
 
