@@ -690,5 +690,124 @@ function deleteResource(req, res) {
 }
 ```
 
+# 8. Resource availability API
+## 8.1 Generare model
+```node
+npx sequelize model:generate --name Availability --attributes availability:Integer,month:Dateonly
+```
+## 8.2 Modificare models/availability.js
+```JS
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+
+  var month = new Date().getMonth();
+  var year = new Date().getFullYear();
+  var defaultValue = new Date(year, month, 1);
+
+  const Availability = sequelize.define('Availability', {
+    id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
+      unique: true,
+      validate: {
+        notEmpty: true
+      }
+    },
+    availability: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    month: {
+      type: DataTypes.DATEONLY,
+      defaultValue: defaultValue
+    }
+  }, {});
+  Availability.associate = function(models) {
+    // associations can be defined here
+    Availability.belongsTo(models.Resources, {
+      foreignKey: 'resourceId',
+      targetKey: 'id',
+      onDelete: 'CASCADE'
+    });
+  };
+  return Availability;
+};
+```
+
+## 8.3 Creare asocieri
+### 8.3.1 models/resources.js
+```JS
+ Resources.associate = function(models) {
+    // associations can be defined here
+    Resources.hasMany(models.Availability, {
+      foreignKey: 'resourceId',
+      as: 'availabilities'
+    });
+  };
+```
+### 8.3.2 models/availability.js
+```JS
+Availability.associate = function(models) {
+    // associations can be defined here
+    Availability.belongsTo(models.Resources, {
+      foreignKey: 'resourceId',
+      targetKey: 'id',
+      onDelete: 'CASCADE'
+    });
+  };
+```
+
+## 8.4 AddWithAvailability API --> controllers/resources.js
+```JS
+const availability = require('../models').Availability;
+function addResource (req, res) {
+    resources.create({
+        name: req.body.name,
+        comment: req.body.comment,
+        main_cluster: req.body.main_cluster,
+        main_apps: req.body.main_apps,
+        rate: req.body.rate,
+        skills: req.body.skills,
+        availabilities: req.body.availabilities
+    }, {
+        include: [{
+            model: availability,
+            as: 'availabilities'
+        }]
+    }).then(result => res.status(200).send({
+        message: 'Resource with id ' + result.id + ' was added!'
+    })).catch(error => {
+        for(var i in error.errors) {
+            if(error.errors[i].message === 'Validation isFloat on rate failed') {
+                res.status(403).json({
+                    statusText: 403 + ' Forbidden!',
+                    message: 'Rate must be FLOAT type!',
+                    error_message: error.errors[i].message
+                });
+            }else {
+                res.json(error);
+            }
+        }
+    });
+}
+```
+## 8.5 Testare POSTMAN 
+- POST Methdod --> http://localhost:5000/api/resources
+```JSON
+{
+	"name": "test",
+	"comment": "this is a test",
+	"main_cluster": "CAEE",
+	"main_apps": "Catia",
+	"rate": "200",
+	"skills": "N/A",
+	"availabilities":{
+		"availability": "5"
+	}
+}
+```
+
 
 

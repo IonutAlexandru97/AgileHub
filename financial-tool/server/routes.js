@@ -23,4 +23,5 @@ router.put('/resources/:id', resourcesController.updateResource);
 router.delete('/resources/:id', resourcesController.deleteResource);
 
 
+
 module.exports = router;

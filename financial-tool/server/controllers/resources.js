@@ -1,4 +1,5 @@
 const resources = require('../models').Resources;
+const availability = require('../models').Availability;
 
 module.exports = {
     addResource,
@@ -15,6 +16,12 @@ function addResource (req, res) {
         main_apps: req.body.main_apps,
         rate: req.body.rate,
         skills: req.body.skills,
+        availabilities: req.body.availabilities
+    }, {
+        include: [{
+            model: availability,
+            as: 'availabilities'
+        }]
     }).then(result => res.status(200).send({
         message: 'Resource with id ' + result.id + ' was added!'
     })).catch(error => {

@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Resources.associate = function(models) {
     // associations can be defined here
+    Resources.hasMany(models.Availability, {
+      foreignKey: 'resourceId',
+      as: 'availabilities'
+    });
   };
   return Resources;
 };
