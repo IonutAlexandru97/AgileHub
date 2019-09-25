@@ -80,12 +80,15 @@ const SignIn = props => {
             }
         }).then(res => {
             if(res.status === 200){
-                history.push('/resources');
+                
                res.json().then(function(object){
-                   alert(object.message);
+                alert('User: ' + object.user.username + ' logged in!');
+                   history.push('/resources');
                  })
              }else{
-                 alert('Error: ' + res.status + ' ' + res.statusText);
+                res.json().then(function(object){
+                    alert('Error: ' + object.message);
+                  })
              }
         })
     }
@@ -109,7 +112,7 @@ const SignIn = props => {
                         id="email"
                         label="Email Address"
                         name="email"
-                        autocomplete="email"
+                        autoComplete="email"
                         autoFocus
                         value={email}
                         onChange={handleEmailInputChange}
@@ -122,7 +125,7 @@ const SignIn = props => {
                         id="password"
                         label="Password"
                         name="password"
-                        autocomplete="password"
+                        autoComplete="password"
                         autoFocus
                         type="password"
                         value={password}

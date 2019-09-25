@@ -383,6 +383,10 @@ npm install --save passport passport-local
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var db = require('../models').Users;
+const passportJWT = require('passport-jwt');
+
+const JWTStrategy   = passportJWT.Strategy;
+const ExtractJWT = passportJWT.ExtractJwt;
 
 passport.use(new LocalStrategy (
     {
@@ -391,7 +395,7 @@ passport.use(new LocalStrategy (
         passReqToCallback: true
     },
 
-    function(req, email, password, done) {
+    function(req ,email, password, done) {
         db.findOne({
             where: {
                 email: email
@@ -399,11 +403,11 @@ passport.use(new LocalStrategy (
         }).then(function(dbUser) {
             if(!dbUser) {
                 return done(null, false, {
-                    message: "Unauthorized"
+                    message: "Incorrect e-mail"
                 });
             } else if(!dbUser.validPassword(password)) {
                 return done(null, false, {
-                    message: "Unauthorized"
+                    message: "Incorrect password!"
                 });
             }
             return done(null, dbUser);
@@ -421,6 +425,21 @@ passport.deserializeUser(function(obj, cb) {
     cb(null, obj);
 });
 
+// passport.use(new JWTStrategy({
+//     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+//     secretOrKey: 'secret'
+// }, function(jwtPayload, cb) {
+//     return db.findOne({
+//         where: {
+//             id: jwtPayload.id
+//         }
+//     }).then(user => {
+//         return cb(null, user);
+//     }).catch(err => {
+//         return cb(err);
+//     });
+// }));
+
 module.exports = passport;
 ```
 ### 3.8.3 Modificare models/users.js
@@ -432,14 +451,19 @@ module.exports = passport;
 
 ### 3.8.4 Modificare routes.js
 ```Javascript
-const passport = require('./config/passport');
-router.post('/login', passport.authenticate('local'), function(req, res) {
-    if(req.user) {
-        res.status(200).json({
-            statusText: 200,
-            message: 'User ' + req.user.username + ' logged in!'
+router.post('/login', function(req, res, next) {
+    passport.authenticate('local', (err, user, info) => {
+        if(err || !user) {
+            return res.status(400).send(info);
+        }
+        req.login(user, (err) => {
+            if(err){
+                res.send(err);
+            }
+            // const token = jwt.sign(user.toJSON(), 'secret');
+            return res.json({user});
         });
-    }
+    })(req, res);
 });
 ```
 ### 3.8.5 Modificare server.js

@@ -1,4 +1,5 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 const passport = require('./config/passport');
@@ -8,13 +9,19 @@ const availabilityController = require('./controllers/availability');
 
 // Users controller
 router.post('/register', usersController.register);
-router.post('/login', passport.authenticate('local'), function(req, res) {
-    if(req.user) {
-        res.status(200).json({
-            statusText: 200,
-            message: 'User ' + req.user.username + ' logged in!'
+router.post('/login', function(req, res, next) {
+    passport.authenticate('local', (err, user, info) => {
+        if(err || !user) {
+            return res.status(400).send(info);
+        }
+        req.login(user, (err) => {
+            if(err){
+                res.send(err);
+            }
+            // const token = jwt.sign(user.toJSON(), 'secret');
+            return res.json({user});
         });
-    }
+    })(req, res);
 });
 
 // Resources controller
