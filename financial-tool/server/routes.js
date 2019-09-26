@@ -10,23 +10,23 @@ const availabilityController = require('./controllers/availability');
 // Users controller
 router.post('/register', usersController.register);
 router.post('/login', function(req, res, next) {
-    passport.authenticate('local', (err, user, info) => {
+    passport.authenticate('local',{session: false}, (err, user, info) => {
         if(err || !user) {
             return res.status(400).send(info);
         }
-        req.login(user, (err) => {
+        req.login(user, {session: false}, (err) => {
             if(err){
                 res.send(err);
             }
-            // const token = jwt.sign(user.toJSON(), 'secret');
-            return res.json({user});
+            const token = jwt.sign(user.toJSON(), 'secret', {expiresIn: '10s'});
+            return res.json({user, token});
         });
     })(req, res);
 });
 
 // Resources controller
 router.post('/resources', resourcesController.addResource);
-router.get('/resources', resourcesController.getAllResources);
+router.get('/resources', passport.authenticate('jwt'), resourcesController.getAllResources);
 router.put('/resources/:id', resourcesController.updateResource);
 router.delete('/resources/:id', resourcesController.deleteResource);
 

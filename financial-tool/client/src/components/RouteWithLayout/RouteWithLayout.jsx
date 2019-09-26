@@ -1,7 +1,9 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
+import Auth from '../../modules';
 const RouteWithLayout = props => {
   const { layout: Layout, component: Component, ...rest } = props;
 
@@ -9,9 +11,19 @@ const RouteWithLayout = props => {
     <Route
       {...rest}
       render={matchProps => (
-        <Layout>
+        Auth.isUserAuthenticated() ? (
+          <Layout>
           <Component {...matchProps} />
         </Layout>
+        ) : (
+          {...alert("You are not authorized to see this page! Please log in!")},
+          <Redirect
+            exact
+            to="/login"
+            />
+            
+        )
+        
       )}
     />
   );

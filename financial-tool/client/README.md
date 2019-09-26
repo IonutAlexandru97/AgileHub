@@ -1552,5 +1552,158 @@ export default function ButtonComponent() {
 }
 ```
 
+# 10. Securizare ruta
+## 10.1 Instalare pachete
+```node
+npm install --save jwt-decode
+```
+
+## 10.2 Creare modules/Auth.js
+```JS
+export default class Auth {
+    static authenticateUser(token) {
+        localStorage.setItem('token', token);
+    }
+}
+```
+
+## 10.3 Creare modules/index.js
+```JS
+export { default } from './SignIn';
+```
+
+## 10.4 views/SignIn/SignIn.jsx
+```JSX
+import Auth from '../../modules'; 
+// const onSubmit = event => {
+//         event.preventDefault();
+//         fetch('/api/login', {
+//             method: 'POST',
+//             body: JSON.stringify({
+//                 email,
+//                 password
+//             }),
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             }
+//         }).then(res => {
+//             if(res.status === 200){
+                
+//                res.json().then(function(object){
+                Auth.authenticateUser(object.token);
+//             history.push('/resources');
+//             alert('User: ' + object.user.username + ' logged in!');
+//              })
+//          }else{
+//             res.json().then(function(object){
+//                 alert('Error: ' + object.message);
+//               })
+//          }
+//     })
+// }
+```
+
+## 10.4 Resources.jsx
+```JSX
+import Auth from '../../modules';
+// useEffect(() => {
+  const token = Auth.getToken('token');
+  // const fetchData = async () => {
+    const result = await axios(api, {
+      headers: { "Authorization": `Bearer ${token}`}
+    });
+//     setValues(result.data);
+//   };
+//   fetchData();
+// }, [api]);
+```
+
+## 10.5 Auth.js
+```JS
+    static getToken(tokenName) {
+        return localStorage.getItem(tokenName);
+    }
+```
+
+## 10.6 RouteWithLayout.jsx
+```JSX
+import Auth from '../../modules';
+// <Route
+//       {...rest}
+//       render={matchProps => (
+        Auth.isUserAuthenticated() ? (
+        //   <Layout>
+        //   <Component {...matchProps} />
+        // </Layout>
+        ) : (
+          {...alert("You are not authorized to see this page! Please log in!")},
+          <Redirect
+            exact
+            to="/login"
+            />
+            
+        )
+        
+      )}
+    />
+```
+
+## 10.7 Auth.js
+```JS
+static isUserAuthenticated() {
+  return localStorage.getItem('token') !=null;
+};
+```
+
+# 11. Expirare Token
+## 11.1 routes.js
+```JS
+// router.post('/login', function(req, res, next) {
+//     passport.authenticate('local',{session: false}, (err, user, info) => {
+//         if(err || !user) {
+//             return res.status(400).send(info);
+//         }
+//         req.login(user, {session: false}, (err) => {
+//             if(err){
+//                 res.send(err);
+//             }
+            const token = jwt.sign(user.toJSON(), 'secret', {expiresIn: '10s'});
+//             return res.json({user, token});
+//         });
+//     })(req, res);
+// });
+```
+## 11.2 Auth.js
+```JS
+static isTokenExpired(token) {
+       
+            const decoded = decode(token);
+            if(decoded.exp < Date.now() / 1000) {
+                alert("Token expired! Please Log In again!");
+                localStorage.removeItem('token');
+                return true;
+            }else {
+                return false;
+            }
+    }
+
+    static isUserAuthenticated() {
+        const token = localStorage.getItem('token');
+        return token && !this.isTokenExpired(token);
+    }
+```
+
+## 12. Implementare LogOut --> TopBar.jsx
+```JSX
+import Auth from '../../../../modules';
+import { Link as RouterLink, withRouter } from 'react-router-dom';
+const { className, history, ...rest } = props;
+ const  handleLogOut = () => {
+   Auth.removeToken('token');
+    history.push('/');
+  };
+  export default withRouter(TopBar);
+```
+
 
 

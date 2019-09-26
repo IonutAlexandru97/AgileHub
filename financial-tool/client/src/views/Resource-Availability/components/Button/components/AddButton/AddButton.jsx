@@ -63,7 +63,7 @@ export default function AddButton() {
     useEffect(() => {
         const fetchData = async () => {
             const result = await axios (
-                '/api/resources/availability'
+                '/api/resources/availability',
             );
             setValues(result.data);
         };

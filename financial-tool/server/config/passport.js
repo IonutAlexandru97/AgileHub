@@ -43,19 +43,19 @@ passport.deserializeUser(function(obj, cb) {
     cb(null, obj);
 });
 
-// passport.use(new JWTStrategy({
-//     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-//     secretOrKey: 'secret'
-// }, function(jwtPayload, cb) {
-//     return db.findOne({
-//         where: {
-//             id: jwtPayload.id
-//         }
-//     }).then(user => {
-//         return cb(null, user);
-//     }).catch(err => {
-//         return cb(err);
-//     });
-// }));
+passport.use(new JWTStrategy({
+    jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+    secretOrKey: 'secret', 
+}, function(jwtPayload, cb) {
+    return db.findOne({
+        where: {
+            id: jwtPayload.id
+        }
+    }).then(user => {
+        return cb(null, user);
+    }).catch(err => {
+        return cb(err);
+    });
+}));
 
 module.exports = passport;

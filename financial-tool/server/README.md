@@ -948,5 +948,55 @@ router.get('/resources/availability/:resourceId', availabilityController.getByRe
 ```
 - Postman GET method --> localhost:5000/api/resources/availability/:id
 
+# 10. JWT
+## 10.1 Instalare pachete
+```node
+npm install --save passport-jwt jsonwebtoken
+```
+
+## 10.1 Adaugare passportJWT --> config/passport.js
+```JS
+const passportJWT = require('passport-jwt');
+
+const JWTStrategy   = passportJWT.Strategy;
+const ExtractJWT = passportJWT.ExtractJwt;
+passport.use(new JWTStrategy({
+    jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+    secretOrKey: 'secret'
+}, function(jwtPayload, cb) {
+    return db.findOne({
+        where: {
+            id: jwtPayload.id
+        }
+    }).then(user => {
+        return cb(null, user);
+    }).catch(err => {
+        return cb(err);
+    });
+}));
+```
+
+## 10.2 Securizare ruta resources --> routes.js
+```JS
+router.post('/login', function(req, res, next) {
+    passport.authenticate('local',{session: false}, (err, user, info) => {
+        if(err || !user) {
+            return res.status(400).send(info);
+        }
+        req.login(user, {session: false}, (err) => {
+            if(err){
+                res.send(err);
+            }
+            const token = jwt.sign(user.toJSON(), 'secret');
+            return res.json({user, token});
+        });
+    })(req, res);
+});
+
+router.get('/resources', passport.authenticate('jwt'), resourcesController.getAllResources);
+```
+
+## 10.3 Testare postman
+
 
 

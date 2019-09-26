@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
+import Auth from '../../modules'; 
 
 function CopyRight() {
     return (
@@ -82,8 +83,9 @@ const SignIn = props => {
             if(res.status === 200){
                 
                res.json().then(function(object){
+                Auth.authenticateUser(object.token);
+                history.push('/resources');
                 alert('User: ' + object.user.username + ' logged in!');
-                   history.push('/resources');
                  })
              }else{
                 res.json().then(function(object){

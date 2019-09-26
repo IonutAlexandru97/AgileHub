@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import MaterialTable from 'material-table';
 import axios from 'axios';
 
+import Auth from '../../modules';
+
 export default function Resources() {
 
 const [values, setValues] = useState({ data: []});
@@ -22,14 +24,19 @@ const [state, setState] = React.useState({
       });
 
 useEffect(() => {
+  const token = Auth.getToken('token');
   const fetchData = async () => {
-    const result = await axios(api);
+    const result = await axios(api, {
+      headers: { "Authorization": `Bearer ${token}`}
+    });
     setValues(result.data);
   };
   fetchData();
 }, [api]);
 
+
       return (
+        <div>
           <MaterialTable
           title="Resources"
           columns={state.columns}
@@ -109,5 +116,7 @@ useEffect(() => {
             }
           }}
           />
+        </div>
+          
       );
 }
