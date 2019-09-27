@@ -289,7 +289,7 @@ http://localhost:5000/api/register --> POST method
 .catch(error => {
         for(var i in error.errors){
             if(error.errors[i].type === 'unique violation'){
-                res.status(403).json({
+                return res.status(403).json({
                     statusText: 403 + ' Forbidden!',
                     message: 'This email is already registered!',
                     error_message: error.errors[i].type
@@ -316,7 +316,7 @@ http://localhost:5000/api/register --> POST method
 ### 3.7.8 Modificare controllers/users.js
 ```JS
  if(error.errors[i].type === 'Validation error') {
-                res.status(403).json({
+               return res.status(403).json({
                     statusText: 403 + ' Forbidden!',
                     message: 'A filed cannot be empty!',
                     error_message: error.errors[i].type
@@ -350,7 +350,7 @@ http://localhost:5000/api/register --> POST method
 ### 3.7.11 Modificare controllers/users.js
 ```JS
  if(error.errors[i].type === 'notNull Violation') {
-                res.status(403).json({
+               return res.status(403).json({
                     statusText: 403 + ' Forbidden!',
                     message: 'A filed cannot be null!',
                     error_message: error.errors[i].type
@@ -451,6 +451,8 @@ module.exports = passport;
 
 ### 3.8.4 Modificare routes.js
 ```Javascript
+const passport = require('./config/passport');
+
 router.post('/login', function(req, res, next) {
     passport.authenticate('local', (err, user, info) => {
         if(err || !user) {
