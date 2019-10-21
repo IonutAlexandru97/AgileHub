@@ -18,7 +18,7 @@ router.post('/login', function(req, res, next) {
             if(err){
                 res.send(err);
             }
-            const token = jwt.sign(user.toJSON(), 'secret', {expiresIn: '10s'});
+            const token = jwt.sign(user.toJSON(), 'secret', {expiresIn: '1h'});
             return res.json({user, token});
         });
     })(req, res);
